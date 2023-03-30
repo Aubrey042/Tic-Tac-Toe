@@ -1,10 +1,27 @@
 * {
-box-sizing: border-box;
-
-}
-main{
+    box-sizing: border-box;
+  }
+  
+  #Game-Board {
+    display: flex;
+    width: 500px;
+    height: 500px;
+    background-color: rgb(92, 111, 111);
+    justify-content: center;
+  }
+  
+  #Game-Cells {
     display: flex;
     flex-wrap: wrap;
-    width: 80vh;
-    height: 60vh;
-}
+    width: 500px;
+    height: 500px;
+  }
+  
+  .Game-Cell { 
+    width: 20vh;
+    border: 2px solid black;
+    flex-basis: 33.33%;
+    justify-content: center;
+    align-items: center;
+  }
+  
