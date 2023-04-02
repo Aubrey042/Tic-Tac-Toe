@@ -1,3 +1,5 @@
+// Run the game
+initializeGame();
 
 // Define initial game state
 let gameBoard = ['', '', '', '', '', '', '', '', ''];
@@ -165,14 +167,19 @@ function displayResult(message) {
 }
 
 
+//Start newGameButton
+const newGameButton = document.createElement("button");
+newGameButton.textContent = "Start New Game";
+document.body.appendChild(newGameButton);
 
+//Reset game, without Player name removel.
+newGameButton.addEventListener("click", () => {
 
+  gameBoard = ['', '', '', '', '', '', '', '', ''];
+  displayGameBoard();
 
-// Function to start new game
-function startNewGame() {}
- 
+  gameOver = false;
+  currentPlayer = players[0];
 
-
-
-// Run the game
-initializeGame();
+  console.log(`New game started between ${players[0]} and ${players[1]}!`);
+});
