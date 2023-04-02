@@ -6,6 +6,11 @@ let gameBoard = ['', '', '', '', '', '', '', '', ''];
 let players = [];
 let currentPlayer = '';
 let gameOver = false;
+let playerScores = {
+  X: 0,
+  O: 0
+};
+
 
 // Define the initial game state
 const State = {
@@ -158,22 +163,55 @@ function checkResult() {
   }
 }
 
-//Display the game result
+// Define variables to track player wins
+let player1Wins = 0;
+let player2Wins = 0;
+
+// Function to update player win counts
+function updatePlayerWins() {
+  const player1WinCount = document.querySelector("#player1-win-count");
+  player1WinCount.textContent = `Player 1 wins: ${player1Wins}`;
+
+  const player2WinCount = document.querySelector("#player2-win-count");
+  player2WinCount.textContent = `Player 2 wins: ${player2Wins}`;
+}
+
+// Function to display the game result
 function displayResult(message) {
   const result = document.createElement("p");
   result.id = "game-result";
   result.textContent = message;
   document.body.appendChild(result);
+
+  // Update player win counts
+  if (message.includes("Player 1")) {
+    player1Wins++;
+  } else if (message.includes("Player 2")) {
+    player2Wins++;
+  }
+  updatePlayerWins();
 }
 
+// Create separate display boxes for each player's win count
+const player1WinCount = document.createElement("p");
+player1WinCount.id = "player1-win-count";
+player1WinCount.textContent = "Player 1 wins: 0";
+document.body.appendChild(player1WinCount);
 
-//Start newGameButton
-const newGameButton = document.createElement("button");
-newGameButton.textContent = "Start New Game";
-document.body.appendChild(newGameButton);
+const player2WinCount = document.createElement("p");
+player2WinCount.id = "player2-win-count";
+player2WinCount.textContent = "Player 2 wins: 0";
+document.body.appendChild(player2WinCount);
+
+
+
+//Play Again Button
+const letsPlayAgainButton = document.createElement("button");
+letsPlayAgainButton.textContent = "Lets Play Again!!!";
+document.body.appendChild(letsPlayAgainButton);
 
 //Reset game, without Player name removel.
-newGameButton.addEventListener("click", () => {
+letsPlayAgainButton.addEventListener("click", () => {
 
   gameBoard = ['', '', '', '', '', '', '', '', ''];
   displayGameBoard();
@@ -182,4 +220,26 @@ newGameButton.addEventListener("click", () => {
   currentPlayer = players[0];
 
   console.log(`New game started between ${players[0]} and ${players[1]}!`);
+});
+
+//Play Again Button
+const newGameButton = document.createElement("button");
+newGameButton.textContent = "New Game!!!";
+document.body.appendChild(newGameButton);
+
+//New game, with Player name removel.
+newGameButton.addEventListener("click", () => {
+
+  gameBoard = ['', '', '', '', '', '', '', '', ''];
+  displayGameBoard();
+  
+  console.log(`New game started between ${players[0]} and ${players[1]}!`);
+
+ // Reset player names
+ const input1 = document.querySelector("input[placeholder='Player 1 Name']");
+ const input2 = document.querySelector("input[placeholder='Player 2 Name']");
+ input1.value = '';
+ input2.value = '';
+ 
+ console.log(`New game started between ${players[0]} and ${players[1]}!`);
 });
