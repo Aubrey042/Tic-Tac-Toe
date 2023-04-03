@@ -1,7 +1,12 @@
+function hideStartContainer() {
+  var startContainer = document.getElementById("start-container");
+  startContainer.style.display = "none";
+}
+
 // Run the game
 initializeGame();
 
-// Define initial game state
+// Define initial game 
 let gameBoard = ['', '', '', '', '', '', '', '', ''];
 let players = [];
 let currentPlayer = '';
@@ -27,41 +32,50 @@ function switchPlayer() {
 
 //Initialize game
 function initializeGame() {
-  const playerNames = document.createElement("p");
+  const playerNames = document.createElement("div");
   playerNames.id = "Player-Names";
   document.body.appendChild(playerNames);
 
   const input1 = document.createElement("input");
   input1.placeholder = "Player 1 Name";
+  input1.id = "player1-name";
   playerNames.appendChild(input1);
 
   const input2 = document.createElement("input");
   input2.placeholder = "Player 2 Name";
+  input2.id = "player2-name";
   playerNames.appendChild(input2);
 
   const button = document.createElement("button");
-  button.textContent = "Start Game";
-  playerNames.appendChild(button);
+button.textContent = "Start Game";
+playerNames.appendChild(button);
+button.id = "start-button";
 
-  button.addEventListener("click", () => {
+button.addEventListener("click", function() {
+  hideStartContainer();
+  button.style.display = "none";
+});
+
+
+  const handleButtonClick = () => {
     players = [input1.value, input2.value];
     currentPlayer = players[0];
     setUpGameBoard();
     console.log(`Game started between ${players[0]} and ${players[1]}!`);
-  });
+
+    // Remove event listener from the button
+    button.removeEventListener("click", handleButtonClick);
+  };
+
+  button.addEventListener("click", handleButtonClick);
 }
+
 // Set up game board
 function setUpGameBoard() {
   const body = document.querySelector("body");
 
-  const h1 = document.createElement('h1');
-  h1.id = "title";
-  h1.innerText = "Tic-Tac-Toe";
-  body.appendChild(h1);
+  
 
-  const h3 = document.createElement('h3');
-  h3.innerText = 'Winner Takes All';
-  body.appendChild(h3);
 
   const main = document.createElement("main");
   main.id = "Game-Board";
@@ -163,11 +177,11 @@ function checkResult() {
   }
 }
 
-// Define variables to track player wins
+// Variables to track player wins
 let player1Wins = 0;
 let player2Wins = 0;
 
-// Function to update player win counts
+// Update player win counts
 function updatePlayerWins() {
   const player1WinCount = document.querySelector("#player1-win-count");
   player1WinCount.textContent = `Player 1 wins: ${player1Wins}`;
@@ -176,7 +190,7 @@ function updatePlayerWins() {
   player2WinCount.textContent = `Player 2 wins: ${player2Wins}`;
 }
 
-// Function to display the game result
+// Display the game result
 function displayResult(message) {
   const result = document.createElement("p");
   result.id = "game-result";
@@ -185,66 +199,50 @@ function displayResult(message) {
 
   // Update player win counts
   if (message.includes("Player 1")) {
-    player1Wins++;
+    playerScores.X++;
   } else if (message.includes("Player 2")) {
-    player2Wins++;
+    playerScores.O++;
   }
-  updatePlayerWins();
+
+  // Display player scores
+  const player1Score = document.createElement("span");
+  player1Score.id = "player1-score";
+  player1Score.textContent = `Player 1: ${playerScores.X}`;
+  document.body.appendChild(player1Score);
+
+  const player2Score = document.createElement("span");
+  player2Score.id = "player2-score";
+  player2Score.textContent = `Player 2: ${playerScores.O}`;
+  document.body.appendChild(player2Score);
+
+  // Add "Play again" button
+  const playAgainButton = document.createElement("button");
+  playAgainButton.textContent = "Play again";
+  document.body.appendChild(playAgainButton);
+
+  // Event listener to "Play again" button
+  playAgainButton.addEventListener("click", () => {
+    // Reset game board
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = players[0];
+    gameOver = false;
+    State.main = [];
+
+    // Remove result message and player scores
+    result.remove();
+    player1Score.remove();
+    player2Score.remove();
+
+    // Remove "Play again" button
+    playAgainButton.remove();
+
+    // Reset game board display
+    displayGameBoard();
+  });
 }
 
-// Create separate display boxes for each player's win count
-const player1WinCount = document.createElement("p");
-player1WinCount.id = "player1-win-count";
-player1WinCount.textContent = "Player 1 wins: 0";
-document.body.appendChild(player1WinCount);
-
-const player2WinCount = document.createElement("p");
-player2WinCount.id = "player2-win-count";
-player2WinCount.textContent = "Player 2 wins: 0";
-document.body.appendChild(player2WinCount);
 
 
 
-//Play Again Button
-const letsPlayAgainButton = document.createElement("button");
-letsPlayAgainButton.textContent = "Lets Play Again!!!";
-document.body.appendChild(letsPlayAgainButton);
 
-//Reset game, without Player name removel.
-letsPlayAgainButton.addEventListener("click", () => {
-
-  gameBoard = ['', '', '', '', '', '', '', '', ''];
-  displayGameBoard();
-
-  gameOver = false;
-  currentPlayer = players[0];
-
-  console.log(`New game started between ${players[0]} and ${players[1]}!`);
-});
-
-//Play Again Button
-const newGameButton = document.createElement("button");
-newGameButton.textContent = "New Game!!!";
-document.body.appendChild(newGameButton);
-
-//New game, with Player name removel.
-newGameButton.addEventListener("click", () => {
-
-  gameBoard = ['', '', '', '', '', '', '', '', ''];
-  displayGameBoard();
   
-  console.log(`New game started between ${players[0]} and ${players[1]}!`);
-
- // Reset player names
- const input1 = document.querySelector("input[placeholder='Player 1 Name']");
- const input2 = document.querySelector("input[placeholder='Player 2 Name']");
- input1.value = '';
- input2.value = '';
- 
- console.log(`New game started between ${players[0]} and ${players[1]}!`);
-});
-
- //need to fix score baord keeping track of player wins.
-/* need to create a way for the system to randoly pick who is 
-x and who is o , only on new or reset games. Do not includ function on start game*/
-// depoly CSS to make the game look better. 
